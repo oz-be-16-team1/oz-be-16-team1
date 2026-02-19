@@ -1,14 +1,24 @@
 from pathlib import Path
+import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+# .env 파일 읽기
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-DEBUG = False
+SECRET_KEY = env('SECRET_KEY')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False       # prod.py에서 실제 도메인/IP 지정
+
 
 ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -19,7 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',           # DRF
+    'rest_framework'        # DRF
 ]
 
 MIDDLEWARE = [
@@ -51,13 +61,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
 LANGUAGE_CODE = 'ko-kr'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Asia/Seoul'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -66,8 +71,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
-
 
 # DRF 공통 설정
 REST_FRAMEWORK = {
@@ -79,7 +82,6 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
 }
-
 
 # 기본 로깅 설정
 LOGGING = {
@@ -93,4 +95,3 @@ LOGGING = {
         "level": "INFO",
     },
 }
-
