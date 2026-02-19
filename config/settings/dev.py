@@ -1,16 +1,25 @@
 from .base import *
+import os
+import environ
+env = environ.Env()
 
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = env.bool("DEBUG", default=True)
+
+# .env에서 가져오거나 기본값 설정
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1", "web"])
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("POSTGRES_DB"),        # .env의 POSTGRES_DB 사용
+        "USER": env("POSTGRES_USER"),      # .env의 POSTGRES_USER 사용
+        "PASSWORD": env("POSTGRES_PASSWORD"),  # .env의 POSTGRES_PASSWORD 사용
+        "HOST": env("DB_HOST", default="db"),
+        "PORT": env("DB_PORT", default="5432"),
     }
 }
 
-# 개발 환경에서는 로깅을 좀 더 상세하게
+# 로깅 설정 (기존 내용 유지)
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
