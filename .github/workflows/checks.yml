@@ -15,9 +15,9 @@ jobs:
 
     env:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: aAsdif@#3z48789!
+      POSTGRES_DB: myapp_db
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DJANGO_SETTINGS_MODULE: config.settings.dev
@@ -26,9 +26,9 @@ jobs:
       postgres:
         image: postgres:15-alpine
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: postgres_user
+          POSTGRES_PASSWORD: aAsdif@#3z48789!
+          POSTGRES_DB: myapp_db
 
         ports:
           - 5432:5432
