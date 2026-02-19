@@ -1,15 +1,11 @@
 from .base import *
 
-# import environ      # docker-compose에서 주입된 .env 읽기
-# env = environ.Env()
-# environ.Env.read_env()  # docker-compose에서 주입된 .env 읽기
-
 DEBUG = False
 ALLOWED_HOSTS = ["mydomain.com"]  # 실제 도메인/IP
 
 # 배포용 DB (Postgres/MySQL 등)
 DATABASES = {
-    # "default": env.db(),  # DATABASE_URL 환경변수 사용
+
 }
 
 # 보안 관련 설정
