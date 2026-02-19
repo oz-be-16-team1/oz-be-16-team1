@@ -9,16 +9,6 @@ on:
     branches:
       - B02
 
-env:
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      DB_HOST: 127.0.0.1
-      DB_PORT: 5432
-      DJANGO_SETTINGS_MODULE: config.settings.dev
-
-
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -30,6 +20,8 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
         ports:
           - 5432:5432
         options: >-
