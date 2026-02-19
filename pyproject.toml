@@ -8,6 +8,7 @@ dependencies = [
     "django-environ>=0.13.0",
     "django-restframework>=0.0.1",
     "drf-yasg>=1.21.14",
+    "psycopg2-binary>=2.9.11",
 ]
 
 [dependency-groups]
