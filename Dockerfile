@@ -21,7 +21,7 @@ WORKDIR /app
 COPY pyproject.toml uv.lock /app/
 
 # 5. 의존성 설치 (시스템 파이썬에 동기화)
-RUN uv sync --frozen --no-install-project
+RUN uv pip install --system --no-cache -r pyproject.toml
 
 # 6. 프로젝트 전체 파일 복사 (단, .dockerignore 설정 권장)
 COPY . /app/
