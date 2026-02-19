@@ -15,7 +15,7 @@ jobs:
 
     env:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      POSTGRES_USER: postgres_user
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: aAsdif@#3z48789!
       POSTGRES_DB: myapp_db
       DB_HOST: 127.0.0.1
@@ -26,7 +26,7 @@ jobs:
       postgres:
         image: postgres:15-alpine
         env:
-          POSTGRES_USER: postgres_user
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: aAsdif@#3z48789!
           POSTGRES_DB: myapp_db
 
