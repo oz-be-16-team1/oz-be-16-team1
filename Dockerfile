@@ -9,8 +9,9 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 ENV PYTHONDONTWRITEBYTECODE=1
 # 로그가 버퍼링 없이 즉시 출력되도록 설정
 ENV PYTHONUNBUFFERED=1
-# uv가 가상환경을 만들지 않고 시스템에 직접 설치하도록 설정
-ENV UV_SYSTEM_PYTHON=1
+# ✅ UV_SYSTEM_PYTHON 제거하고, venv를 /app 밖에 생성
+ENV UV_PROJECT_ENVIRONMENT=/venv
+ENV PATH="/venv/bin:$PATH"
 
 # 3. 작업 디렉토리 설정
 WORKDIR /app
