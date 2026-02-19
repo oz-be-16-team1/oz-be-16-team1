@@ -17,7 +17,7 @@ jobs:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: aAsdif@#3z48789!
-      POSTGRES_DB: myapp_db
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DJANGO_SETTINGS_MODULE: config.settings.dev
@@ -28,7 +28,7 @@ jobs:
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: aAsdif@#3z48789!
-          POSTGRES_DB: myapp_db
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
         ports:
           - 5432:5432
