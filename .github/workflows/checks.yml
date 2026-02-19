@@ -4,13 +4,13 @@ name: Code Quality Checks
 on:
   push:
     branches:
-      - main
+      - B02
   pull_request:
     branches:
-      - main
+      - B02
 jobs:
   ci:
-    runs-on: Postgresql-latest
+    runs-on: ubuntu-latest
 
     services:
       postgres:
