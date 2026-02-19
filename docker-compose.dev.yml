@@ -22,6 +22,8 @@ services:
       - .env
     ports:
       - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
     depends_on:
       - db
     volumes:
