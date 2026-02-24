@@ -18,7 +18,7 @@ DATABASES = {
         "NAME": env("POSTGRES_DB"),  # .env의 POSTGRES_DB 사용
         "USER": env("POSTGRES_USER"),  # .env의 POSTGRES_USER 사용
         "PASSWORD": env("POSTGRES_PASSWORD"),  # .env의 POSTGRES_PASSWORD 사용
-        "HOST": env("DB_HOST", default="db"),
+        "HOST": "127.0.0.1",  # .env 아니고 직접 입력함!!!
         "PORT": env("DB_PORT", default="5432"),
     }
 }
