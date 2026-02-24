@@ -1,32 +1,30 @@
-from django.conf import settings
 from django.db import models
+from django.conf import settings
 
 
 class Asset(models.Model):
     class AssetType(models.TextChoices):
-        BANK = "BANK", "은행"
-        CREDIT_CARD = "CREDIT_CARD", "신용카드"
-        PREPAID_CARD = "PREPAID_CARD", "신불카드"
-        CASH = "CASH", "현금"
+        BANK = "bank", "계좌"
+        CARD = "card", "신용카드"
+        CASH = "cash", "현금"
+        GIFTCARD = "giftcard", "선불카드"
 
+    # 1:N 관계 설정
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,  # 사용자가 지워져도 자산 기록은 남김
+        null=True,  # SET_NULL을 쓰려면 반드시 필요
+        blank=True,
         related_name="assets",
     )
-    asset_type = models.CharField(max_length=20, choices=AssetType.choices)
-    name = models.CharField(max_length=100)  # "내 용돈 통장"
-    provider = models.CharField(max_length=100, blank=True)  # "카카오뱅크"
-    balance = models.DecimalField(max_digits=14, decimal_places=2, default=0)
-    display_number = models.CharField(max_length=20, blank=True)  # "**1234"
-    encrypted_number = models.TextField(max_length=255, blank=True)  # AES 암호화된 값
-    is_auto_sync = models.BooleanField(default=False)
-    last_synced_at = models.DateTimeField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        ordering = ("-created_at",)
+    asset_type = models.CharField(max_length=10, choices=AssetType.choices)
+    name = models.CharField(max_length=50)  # 이름 : 예를들어 용돈 주머니
+    balance = models.DecimalField(max_digits=13, decimal_places=0, default=0)
+
+    # Soft Delete를 위해
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        # 관리자 페이지나 디버깅할 때 알아보기 쉽게
-        return f"{self.user} - {self.name} ({self.asset_type})"
+        username = self.user.username if self.user else "deleted-user"
+        return f"[{self.get_asset_type_display()}] {self.name} ({username})"
