@@ -8,3 +8,7 @@ class MoneySerializer(serializers.ModelSerializer):
         model = MoneyProverb
         fields = "__all__"
         read_only_fields = ["content", "author"]
+
+
+class ProverbSerializer(serializers.ModelSerializer):
+    pass
