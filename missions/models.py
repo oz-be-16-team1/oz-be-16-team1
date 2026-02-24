@@ -20,17 +20,6 @@ class MissionGoal(models.Model):
         max_length=20, choices=Status.choices, default=Status.IN_PROGRESS
     )
 
-    @property
-    def progress_rate(self):
-        """
-        현재 저축 진행률을 계산 퍼센티지 (0 ~ 100)
-        """
-        if self.target_price <= 0:
-            return 0  # Zero Division 방지
-
-        rate = (self.saved_amount / self.target_price) * 100
-        return round(rate, 1)  # 소수점 첫째 자리까지만 반환
-
 
 class GoalAlbum(models.Model):
     # 어떤 목표에 속한 앨범인지
@@ -42,3 +31,17 @@ class GoalAlbum(models.Model):
     child_memo = models.TextField(blank=True)
     parent_comment = models.TextField(blank=True)  # 부모의 코멘트 (응원 등)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+@property
+def progress_rate(self):
+    """
+    현재 저축 진행률을 계산 퍼센티지 (0 ~ 100)
+    """
+    if self.target_price <= 0:
+        return 0  # Zero Division 방지
+
+    # 진행률 계산 (일반 나눗셈 사용)
+    rate = (self.saved_amount / self.target_price) * 100
+
+    return round(rate, 1)  # 소수점 첫째 자리까지만 반환
