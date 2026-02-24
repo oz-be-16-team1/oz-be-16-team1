@@ -7,7 +7,7 @@ class Asset(models.Model):
         BANK = "bank", "계좌"
         CARD = "card", "신용카드"
         CASH = "cash", "현금"
-        GIFTCARD = "gifcard", "선불카드"
+        GIFTCARD = "giftcard", "선불카드"
 
     # 1:N 관계 설정
     user = models.ForeignKey(
