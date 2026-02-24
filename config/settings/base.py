@@ -1,9 +1,10 @@
-from pathlib import Path
-import environ
 import os
+from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+import environ
+
+# Project root (where manage.py lives)
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env(DEBUG=(bool, False))
 # .env 파일 읽기
@@ -28,6 +29,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",  # DRF
+    "drf_yasg",
+    "assets",
+    "missions",
 ]
 
 MIDDLEWARE = [
