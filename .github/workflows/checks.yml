@@ -10,7 +10,7 @@ on:
       - main
 jobs:
   ci:
-    runs-on: Postgresql-latest
+    runs-on: ubuntu-latest
 
     services:
       postgres:
