@@ -2,8 +2,9 @@ from pathlib import Path
 import environ
 import os
 
+AUTH_USER_MODEL = "users.User"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env(DEBUG=(bool, False))
 # .env 파일 읽기
@@ -28,6 +29,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",  # DRF
+    "users",
+    "assets",
+    "finance",
+    "missions",
+    "contents",
 ]
 
 MIDDLEWARE = [
