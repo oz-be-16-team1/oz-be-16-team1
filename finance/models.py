@@ -12,7 +12,7 @@ class Transaction(models.Model):
     class CategoryType(models.TextChoices):
         NECESSITY = "necessity", "필요"
         CHOICE = "choice", "선택"
-        GUITAR = "guitar", "기타"
+        ETC = "etc", "기타"
 
     # 관계 설정 / 어떤 아이의 내역인가?
     user = models.ForeignKey(
@@ -37,7 +37,7 @@ class Transaction(models.Model):
     # 필요인지, 선택인지, 기타 정보
     category_middle = models.CharField(max_length=20, choices=CategoryType.choices)
     # 기타일때 들어갈 내용
-    guitar = models.CharField(max_length=100, null=True)
+    etc = models.CharField(max_length=100, null=True)
     # 교육, 아이의 주체적 참여를 위한 필드
     is_confirmed = models.BooleanField(
         default=False

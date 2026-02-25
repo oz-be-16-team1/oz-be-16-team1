@@ -2,7 +2,7 @@ from django.db.models import Q
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
 
 from assets.models import Asset
 from finance.models import Transaction, FixedExpense
@@ -39,8 +39,8 @@ class TransactionListCreateAPIView(viewsets.ModelViewSet):
         obj = super().get_object()
         user = self.request.user
 
-        if user.role == "PARENT" and obj.user != user:
-            raise PermissionDenied("수정은 작성자만 가능합니다.")
+        if user.role == "PARENT" and self.request.method not in SAFE_METHODS:
+            raise PermissionDenied("수정/삭제는 작성자만 가능합니다.")
 
         return obj
 
