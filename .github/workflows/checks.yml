@@ -58,7 +58,7 @@ jobs:
       env:
         # DB 연결 정보 설정 (Postgres 서비스 주소 사용)
         DATABASE_URL: postgres://${{ secrets.POSTGRES_USER || 'postgres' }}:${{ secrets.POSTGRES_PASSWORD || 'password' }}@postgres:5432/${{ secrets.POSTGRES_DB || 'test_db' }}
-        DB_HOST: localhost
+        DB_HOST: localhost # github Action service는 localhost 주소 값으로 접근이 가능하다
         DJANGO_SETTINGS_MODULE: config.settings.dev # 개발용 설정 사용 확인
       run: |
         uv run python manage.py migrate
