@@ -26,4 +26,5 @@ class Asset(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"[{self.get_asset_type_display()}] {self.name} ({self.user.username})"
+        username = self.user.username if self.user else "deleted-user"
+        return f"[{self.get_asset_type_display()}] {self.name} ({username})"

@@ -50,6 +50,19 @@ class AssetAPITest(TestCase):
         response = self.client.post("/api/assets/", data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_user_값을_보내도_로그인_유저로_생성됨(self):
+        data = {
+            "user": str(self.other_user.id),
+            "asset_type": "cash",
+            "name": "스푸핑 시도",
+            "balance": 1000,
+        }
+        response = self.client.post("/api/assets/", data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        created = Asset.objects.get(id=response.data["id"])
+        self.assertEqual(created.user_id, self.user.id)
+
     # ── 조회 테스트 ──────────────────────────────
 
     def test_내_자산_목록_조회(self):
@@ -97,3 +110,10 @@ class AssetAPITest(TestCase):
         )
         response = self.client.delete(f"/api/assets/{other_asset.id}/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_user가_없어도_str_호출_가능(self):
+        self.asset.user = None
+        self.asset.save(update_fields=["user"])
+
+        rendered = str(self.asset)
+        self.assertIn("deleted-user", rendered)
