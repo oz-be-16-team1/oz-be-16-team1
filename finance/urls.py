@@ -9,6 +9,8 @@ router.register(
 )
 router.register(r"fixed", views.FixedExpenseListCreateAPIView, basename="fixed")
 
+app_name = "finance"
+
 urlpatterns = [
     path("", include(router.urls)),
 ]

@@ -12,11 +12,25 @@ class TransactionListCreateAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return (
-            Transaction.objects.filter(user=self.request.user)
-            .select_related("asset")
-            .order_by("-created_at")
-        )
+        user = self.request.user
+
+        # 조회자가 부모일 경우
+        if user.role == "PARENT":
+            user_children = user.parent.values_list("id", flat=True)
+
+            return (
+                Transaction.objects.filter(user__in=list(user_children) + [user.id])
+                .select_related("asset")
+                .order_by("-created_at")
+            )
+
+        else:
+            # 부모가 아니라면
+            return (
+                Transaction.objects.filter(user=self.request.user)
+                .select_related("asset")
+                .order_by("-created_at")
+            )
 
     def perform_create(self, serializer):
         asset_id = self.request.data.get("asset")

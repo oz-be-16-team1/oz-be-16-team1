@@ -38,6 +38,8 @@ class Transaction(models.Model):
     is_fixed_expense = models.BooleanField(default=False)  # 고정비 여부
     # 메타 정보 (발생 일자)
     created_at = models.DateTimeField(auto_now_add=True)
+    # 실제 일자
+    real_date = models.DateTimeField()
 
     class Meta:
         ordering = ["-created_at"]  # 최신순 정렬
