@@ -5,7 +5,7 @@ from contents import views
 router = DefaultRouter()
 router.register(r"", views.ProverbScrapListCreateView, basename="proverb_scrap")
 
-name = "contents"
+app_name = "contents"
 
 urlpatterns = [
     path("proverb_scrap/", include(router.urls)),

@@ -7,7 +7,7 @@ class Asset(models.Model):
         BANK = "bank", "계좌"
         CARD = "card", "신용카드"
         CASH = "cash", "현금"
-        GIFTCARD = "gifcard", "선불카드"
+        GIFTCARD = "giftcard", "선불카드"
 
     # 1:N 관계 설정
     user = models.ForeignKey(
@@ -26,4 +26,5 @@ class Asset(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"[{self.get_asset_type_display()}] {self.name} ({self.user.username})"
+        username = self.user.username if self.user else "deleted-user"
+        return f"[{self.get_asset_type_display()}] {self.name} ({username})"
