@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User
 
+
 # .models에 정의한 User 모델을 관리자 페이지에서 볼 수 있게 등록
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):

@@ -2,23 +2,22 @@ from rest_framework import serializers
 from .models import User
 import uuid
 
+
 class RegisterSerializer(serializers.ModelSerializer):
     # 비밀번호는 쓰기 전용으로 설정 for 조회 시 노출 방지
     password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'email', 'role', 'parent']
+        fields = ["id", "username", "password", "email", "role", "parent"]
 
     # 필드 수준 검정 (validate_<필드명>)
-    def validate(self,data):
-        role = data.get('role', None)
-        parent = data.get('parent', None)
+    def validate(self, data):
+        role = data.get("role", None)
+        parent = data.get("parent", None)
 
         if role is None:
-            raise serializers.ValidationError({
-                "role": "role은 필수입니다."
-            })
+            raise serializers.ValidationError({"role": "role은 필수입니다."})
 
             # 역할이 부모인 유저 (role: parent) 는 자신의 부모를 가질 수 없도록 제한
         # 최적의 방법은 아닌것 같지만

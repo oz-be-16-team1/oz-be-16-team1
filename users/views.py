@@ -5,6 +5,7 @@ from django.conf import settings
 from .models import User
 from .serializers import RegisterSerializer
 
+
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
@@ -28,7 +29,7 @@ class RegisterView(generics.CreateAPIView):
                 recipient_list=[user.email],
                 fail_silently=False,
             )
-        except Exception as e:
+        except Exception:
             # 이메일 발송 실패 시 처리 (로그 기록 등)
             return Response(
                 {"message": "유저는 생성되었으나 인증 메일 발송에 실패했습니다."},
@@ -47,6 +48,7 @@ class VerifyEmailView(generics.GenericAPIView):
     """
     사용자가 이메일 링크를 클릭했을 때 호출되는 뷰
     """
+
     def get(self, request, token):
         try:
             user = User.objects.get(verification_token=token)
@@ -54,8 +56,12 @@ class VerifyEmailView(generics.GenericAPIView):
             user.is_email_verified = True
             user.verification_token = None  # 인증 완료 후 토큰 초기화
             user.save()
-            return Response({"message": "이메일 인증이 완료되었습니다. 이제 로그인이 가능합니다."},
-                            status=status.HTTP_200_OK)
+            return Response(
+                {"message": "이메일 인증이 완료되었습니다. 이제 로그인이 가능합니다."},
+                status=status.HTTP_200_OK,
+            )
         except User.DoesNotExist:
-            return Response({"error": "유효하지 않은 토큰입니다."},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "유효하지 않은 토큰입니다."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
