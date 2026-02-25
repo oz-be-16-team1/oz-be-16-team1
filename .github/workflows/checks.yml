@@ -18,7 +18,7 @@ jobs:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD || 'password' }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB || 'test_db' }}
     services:
-      db:
+      postgres:
         image: postgres:15-alpine
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER || 'postgres' }}
@@ -58,6 +58,7 @@ jobs:
       env:
         # DB 연결 정보 설정 (Postgres 서비스 주소 사용)
         DATABASE_URL: postgres://${{ secrets.POSTGRES_USER || 'postgres' }}:${{ secrets.POSTGRES_PASSWORD || 'password' }}@postgres:5432/${{ secrets.POSTGRES_DB || 'test_db' }}
+        DB_HOST: postgres
         DJANGO_SETTINGS_MODULE: config.settings.dev # 개발용 설정 사용 확인
       run: |
         uv run python manage.py migrate
@@ -65,5 +66,6 @@ jobs:
     - name: Run Django Tests
       env:
         DATABASE_URL: postgres://${{ secrets.POSTGRES_USER || 'postgres' }}:${{ secrets.POSTGRES_PASSWORD || 'password' }}@postgres:5432/${{ secrets.POSTGRES_DB || 'test_db' }}
+        DB_HOST: postgres
         DJANGO_SETTINGS_MODULE: config.settings.dev
       run: uv run python manage.py test
