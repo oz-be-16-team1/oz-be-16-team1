@@ -1,0 +1,38 @@
+<meta charset="UTF-8">
+{% extends "base.html" %} {% block content %}
+<div class="login-container" style="max-width: 400px; margin: 50px auto;">
+    <h2>로그인</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <p style="color: red;">아이디나 비밀번호가 올바르지 않습니다.</p>
+        {% endif %}
+
+        <div style="margin-bottom: 15px;">
+            {{ form.username.label_tag }}<br>
+            {{ form.username }}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            {{ form.password.label_tag }}<br>
+            {{ form.password }}
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 10px;">로그인</button>
+    </form>
+
+    {% if user.is_authenticated %}
+        <p>환영합니다, {{ user.username }}님!</p>
+        <form action="{% url 'users:logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">로그아웃</button>
+        </form>
+    {% else %}
+        <a href="{% url 'users:login' %}">로그인 하러가기</a>
+    {% endif %}
+
+    <hr>
+    <p>계정이 없으신가요? <a href="{% url 'users:signup' %}">회원가입</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mt-5">
+    <h1>반가워요, {{ user.username }}님!</h1>
+
+    <!-- 인증이 안 된 사용자에게만 보여주기 -->
+    {% if not user.is_email_verified %}
+        <div class="alert alert-warning">
+            이메일 인증이 아직 완료되지 않았습니다.
+            <a href="{% url 'users:resend_verification' %}" class="btn btn-sm btn-outline-primary ms-2">인증 메일 재전송</a>
+        </div>
+    {% endif %}
+
+    <div class="alert {% if user.is_email_verified %}alert-success{% else %}alert-warning{% endif %}">
+        {% if user.is_email_verified %}
+            ✅ 이메일 인증이 완료된 계정입니다.
+        {% else %}
+            ⚠️ 이메일 인증이 필요합니다. ({{ user.email }})
+            <br>
+            <small>인증 토큰: {{ user.verification_token }}</small> {% endif %}
+    </div>
+
+    <p>역할: {{ user.get_role_display }}</p>
+    <a href="{% url 'users:logout' %}" class="btn btn-danger">로그아웃</a>
+</div>
+{% endblock %}

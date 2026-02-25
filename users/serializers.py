@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User
 import uuid
 
@@ -39,3 +40,16 @@ class RegisterSerializer(serializers.ModelSerializer):
             verification_token=str(uuid.uuid4()),  # 토큰 생성
         )
         return user
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # 토큰에 추가 클레임 설정
+        token["username"] = user.username
+        token["email"] = user.email
+        token["role"] = user.role
+
+        return token
