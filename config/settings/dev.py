@@ -35,3 +35,11 @@ LOGGING = {
         "level": "DEBUG",
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '자신의_구글_이메일@gmail.com'
+EMAIL_HOST_PASSWORD = '구글_앱_비밀번호'  # 일반 비번이 아닌 '앱 비밀번호' 발급 필요
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

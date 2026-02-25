@@ -1,20 +1,24 @@
-from django.db import models
-
 from django.contrib.auth.models import AbstractUser
 import uuid
+from django.db import models
 
 
 class User(AbstractUser):
     class RoleEnum(models.TextChoices):
         PARENT = "PARENT", "부모"
-        CHILD = " CHILD", "자녀"
+        CHILD = "CHILD", "자녀"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
+    email = models.EmailField(unique=True)
     role = models.CharField(
         max_length=10, choices=RoleEnum.choices, default=RoleEnum.PARENT
     )
-
+    # 이메일 인증 여부 확인 필드
+    is_email_verified = models.BooleanField(default=False)
+    # 이메일 인증용 고유 토큰 (간단한 구현을 위해 UUID 등 사용 가능)
+    verification_token = models.CharField(
+        max_length=255, unique=True, null=True, blank=True
+    )
     # 자기 참조 (부모-자녀 연결) / 부모 계정은 이 필드가 null
     parent = models.ForeignKey(
         "self",
