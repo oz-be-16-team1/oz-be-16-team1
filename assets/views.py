@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Asset
-from .serializers import AssetSerializer
+from .serializers import AssetSerializer, AssetUpdateSerializer
 
 
 class AssetListCreateView(APIView):
@@ -22,17 +22,17 @@ class AssetListCreateView(APIView):
 
     def post(self, request):
         serializer = AssetSerializer(data=request.data)
-        if serializer.is_valid():
-            # user는 read_only라 클라이언트가 못 넣으니
-            # 여기서 로그인한 유저를 직접 넣어줌
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        # user는 read_only라 클라이언트가 못 넣으니
+        # 여기서 로그인한 유저를 직접 넣어줌
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class AssetDetailView(APIView):
     """
     GET    /assets/<id>/  → 특정 자산 조회
+    PATCH  /assets/<id>/  → 자산 수정 (부분 수정)
     DELETE /assets/<id>/  → 자산 삭제 (Soft Delete)
     """
 
@@ -53,6 +53,17 @@ class AssetDetailView(APIView):
             )
         serializer = AssetSerializer(asset)
         return Response(serializer.data)
+
+    def patch(self, request, pk):
+        asset = self.get_object(pk, request.user)
+        if not asset:
+            return Response(
+                {"detail": "자산을 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = AssetUpdateSerializer(asset, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(AssetSerializer(asset).data)
 
     def delete(self, request, pk):
         asset = self.get_object(pk, request.user)
