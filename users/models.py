@@ -4,6 +4,9 @@ from django.db import models
 
 
 class User(AbstractUser):
+    class Meta:
+        db_table = "users_user"
+
     class RoleEnum(models.TextChoices):
         PARENT = "PARENT", "부모"
         CHILD = "CHILD", "자녀"

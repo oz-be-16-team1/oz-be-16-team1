@@ -2,6 +2,7 @@ from pathlib import Path  # 추가: F405 해결
 from datetime import timedelta
 from .base import *  # noqa: F403
 import os
+import sys
 import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # noqa: F405
@@ -76,3 +77,26 @@ SIMPLE_JWT = {
     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
     "JTI_CLAIM": "jti",
 }
+
+
+# 테스트 환경에서 마이그레이션 파일을 일일이 읽지 않고 모델 구조대로 테이블을 생성하게
+class DisableMigrations:
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return None
+
+
+MIGRATIONS_MODULES = {
+    "users": None,
+    "token_blacklist": None,
+}
+# 테스트 실행 중일 때만 SQLite 사용
+if "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    }
