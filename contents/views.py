@@ -12,7 +12,7 @@ class ContentsMoneyProverbListView(APIView):
 
     def get(self, request):
         ojb = MoneyProverb.objects.all().order_by("?").first()
-        serializer = MoneyProverbSerializer(ojb, many=True)
+        serializer = MoneyProverbSerializer(ojb)
         return Response(serializer.data)
 
 
@@ -28,6 +28,4 @@ class ProverbScrapListCreateView(viewsets.ModelViewSet):
         )
 
     def perform_create(self, serializer):
-        serializer.save(
-            user=self.request.user, property_id=self.kwargs.get("proverb_id")
-        )
+        serializer.save(user=self.request.user, pk=self.kwargs.get("proverb_id"))

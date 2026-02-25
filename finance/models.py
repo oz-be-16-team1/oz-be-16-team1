@@ -15,6 +15,7 @@ class Transaction(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name="transactions",
+        blank=True,
     )
 
     # 금액 및 기본 정보
@@ -31,12 +32,14 @@ class Transaction(models.Model):
     )
     memo = models.TextField(null=True, blank=True)  # 셀프 피드백 기록
 
-    # ai_feedback = models.TextField(null=True, blank=True)
+    ai_feedback = models.TextField(null=True, blank=True)
 
     # 고정 지출 여부
     is_fixed_expense = models.BooleanField(default=False)  # 고정비 여부
     # 메타 정보 (발생 일자)
     created_at = models.DateTimeField(auto_now_add=True)
+    # 실제 일자
+    real_date = models.DateTimeField()
 
     class Meta:
         ordering = ["-created_at"]  # 최신순 정렬
