@@ -39,7 +39,7 @@ class TransactionListCreateAPIView(viewsets.ModelViewSet):
         obj = super().get_object()
         user = self.request.user
 
-        if user.role == "PARENT" and self.request.method not in SAFE_METHODS:
+        if obj.user != user and self.request.method not in SAFE_METHODS:
             raise PermissionDenied("수정/삭제는 작성자만 가능합니다.")
 
         return obj
