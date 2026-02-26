@@ -13,7 +13,7 @@ services:
     ports:
       - "${DB_PORT:-5432}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_v2:/var/lib/postgresql/data
 
   web:
     build: .
@@ -23,6 +23,9 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
       - DJANGO_SETTINGS_MODULE=config.settings.dev
     depends_on:
       - db
@@ -30,4 +33,4 @@ services:
       - .:/app
 
 volumes:
-  postgres_data:
+  postgres_data_v2:
