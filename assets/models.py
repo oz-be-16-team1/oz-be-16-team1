@@ -22,7 +22,7 @@ class Asset(models.Model):
     )
 
     asset_type = models.CharField(max_length=10, choices=AssetType.choices)
-    name = models.CharField(max_length=50)  # 이름 : 예를들어 용돈 주머니
+    name = models.CharField(max_length=50)  
     provider = models.CharField(max_length=100, blank=True, default="")
     balance = models.DecimalField(
         max_digits=13,
