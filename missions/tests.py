@@ -16,9 +16,11 @@ class MissionGoalAPITest(APITestCase):
         self.client = APIClient()
 
         # 아이 유저, 다른 유저
-        self.child = User.objects.create_user(username="child", password="testpass123")
+        self.child = User.objects.create_user(
+            username="child", password="testpass123", email="test@test.com"
+        )
         self.other_user = User.objects.create_user(
-            username="other", password="testpass123"
+            username="other", password="testpass123", email="other@test.com"
         )
         self.client.force_authenticate(user=self.child)
 
