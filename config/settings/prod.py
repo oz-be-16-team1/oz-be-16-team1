@@ -4,7 +4,7 @@ import environ
 DEBUG = False
 
 # BASE_DIR은 base.py에 정의되어 있지만, 린터 에러 방지를 위해
-env = environ.Env
+env = environ.Env()
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["mydomain.com"])  # noqa: F405
 
