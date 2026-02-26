@@ -21,6 +21,7 @@ class Asset(models.Model):
     asset_type = models.CharField(max_length=10, choices=AssetType.choices)
     name = models.CharField(max_length=50)  # 이름 : 예를들어 용돈 주머니
     balance = models.DecimalField(max_digits=13, decimal_places=0, default=0)
+    is_saving_account = models.BooleanField(default=False)
 
     # Soft Delete를 위해
     is_active = models.BooleanField(default=True)
