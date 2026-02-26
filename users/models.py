@@ -12,7 +12,7 @@ class User(AbstractUser):
         CHILD = "CHILD", "자녀"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
     role = models.CharField(
         max_length=10, choices=RoleEnum.choices, default=RoleEnum.PARENT
     )
@@ -34,6 +34,12 @@ class User(AbstractUser):
     birth_date = models.DateField(null=True, blank=True)
     is_verified = models.BooleanField(default=False)  ## 법정대리인 동의 여부 ##
     allow_monitoring = models.BooleanField(default=True)  # 자녀의 독립 토글
+
+    def save(self, *args, **kwargs):
+        # 빈 문자열 이메일은 DB에 NULL로 저장해 unique 충돌을 방지한다.
+        if self.email == "":
+            self.email = None
+        super().save(*args, **kwargs)
 
     def resign_user(self):
         """

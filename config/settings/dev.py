@@ -43,7 +43,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "theoriginaldongik@gmail.com"
-EMAIL_HOST_PASSWORD = "tfsnprdvhhxrflph"  # 일반 비번이 아닌 '앱 비밀번호'
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGIN_URL = "users:login"

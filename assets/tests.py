@@ -16,10 +16,14 @@ class AssetAPITest(TestCase):
         # 테스트용 유저 두 명
         # why. 남의 자산에 접근하는 케이스도 테스트하기 위해
         self.user = User.objects.create_user(
-            username="testuser", password="testpass123"
+            username="testuser",
+            password="testpass123",
+            email="test@test.com",
         )
         self.other_user = User.objects.create_user(
-            username="otheruser", password="testpass123"
+            username="otheruser",
+            password="testpass123",
+            email="other@test.com",
         )
 
         # 로그인 상태로 만들기
@@ -199,7 +203,7 @@ class AssetAPITest(TestCase):
     def test_비로그인_자산_목록_조회_실패(self):
         unauth_client = APIClient()
         response = unauth_client.get("/api/assets/")
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_비로그인_자산_수정_실패(self):
         unauth_client = APIClient()
@@ -207,4 +211,4 @@ class AssetAPITest(TestCase):
             f"/api/assets/{self.asset.id}/",
             {"name": "비로그인 수정"},
         )
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
