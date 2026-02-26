@@ -1,5 +1,4 @@
 from pathlib import Path  # 추가: F405 해결
-from datetime import timedelta
 from .base import *  # noqa: F403
 import os
 import sys
@@ -54,31 +53,6 @@ LOGIN_REDIRECT_URL = "users:main"
 
 # 로그아웃 성공 시 이동할 페이지 (로그인 페이지)
 LOGOUT_REDIRECT_URL = "/login/"
-
-# 개발 환경에서는 쿠키 secure 설정을 끔
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": True,
-    "ALGORITHM": "HS256",
-    "SIGNING_KEY": SECRET_KEY,  # noqa: F405
-    "VERIFYING_KEY": None,
-    "AUDIENCE": None,
-    "ISSUER": None,
-    "JWK_URL": None,
-    "LEEWAY": 0,
-    "AUTH_HEADER_TYPES": ("Bearer",),
-    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-    "USER_ID_FIELD": "id",
-    "USER_ID_CLAIM": "user_id",
-    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-    "TOKEN_TYPE_CLAIM": "token_type",
-    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
-    "JTI_CLAIM": "jti",
-}
 
 
 # 테스트 환경에서 마이그레이션 파일을 일일이 읽지 않고 모델 구조대로 테이블을 생성하게
