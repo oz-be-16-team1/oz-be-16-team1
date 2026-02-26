@@ -1,8 +1,7 @@
-from datetime import datetime
-
 from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework.reverse import reverse
+from django.utils import timezone
 
 from assets.models import Asset
 from finance.models import Transaction, FixedExpense
@@ -59,7 +58,7 @@ class TransactionTest(APITestCase):
             importance=1,
             memo="test",
             is_fixed_expense=False,
-            real_date=datetime.now(),
+            real_date=timezone.now(),
         )
 
     # 정상 생성 테스트
