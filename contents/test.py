@@ -60,8 +60,8 @@ class ProverbScrapTest(APITestCase):
 
         data = {"user": self.user2.id, "proverb": self.proverb1.id}
         response = self.client.post(url1, data)
-        # 중복 관심 등록으로 인해 400 에러
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        # 다른 유저의 동일 명언 스크랩은 허용됨
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     # 정상 삭제 테스트
     def test_normal_delete(self):
