@@ -152,7 +152,11 @@ class MissionGoal(models.Model):
 
     def save(self, *args, **kwargs):
         # 모델 단독 저장 시에도 clean()/제약 검증을 강제
-        self.full_clean()
+
+        # update_fields로 부분 저장할 때는 full_clean 건너뜀
+        # complete(), cancel() 메서드가 이미 검증하므로 안전
+        if not kwargs.get("update_fields"):
+            self.full_clean()
         super().save(*args, **kwargs)
 
     class Meta:
