@@ -8,14 +8,14 @@ app_name = "users"  # 템플릿 등에서 'users:login'으로 호출 가능
 
 urlpatterns = [
     # /api/users/ 로 접속하면 바로 login/ 으로 보냄
-    path("", RedirectView.as_view(url="login/"), name="index"),
+    path("", RedirectView.as_view(pattern_name="users:login"), name="index"),
     path("verify/<str:token>/", views.verify_email, name="verify_email"),
     path("resend-email/", views.resend_verification, name="resend_verification"),
     path("main/", views.main_home, name="main"),
     path(
         "login/",
         auth_views.LoginView.as_view(template_name="accounts/login.html"),
-        name="api_login",
+        name="login",
     ),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("signup/", views.signup, name="signup"),

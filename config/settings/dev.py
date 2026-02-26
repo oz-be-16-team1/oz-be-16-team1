@@ -47,6 +47,8 @@ EMAIL_HOST_USER = "theoriginaldongik@gmail.com"
 EMAIL_HOST_PASSWORD = "tfsnprdvhhxrflph"  # 일반 비번이 아닌 '앱 비밀번호'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+LOGIN_URL = "users:login"
+
 # 로그인 성공 시 이동할 페이지 (메인 페이지)
 LOGIN_REDIRECT_URL = "users:main"
 
