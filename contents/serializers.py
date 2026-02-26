@@ -11,9 +11,12 @@ class MoneyProverbSerializer(serializers.ModelSerializer):
 
 
 class ProverbScrapSerializer(serializers.ModelSerializer):
+    proverb = MoneyProverbSerializer(read_only=True)
+
     class Meta:
         model = ProverbScrap
-        fields = "__all__"
+        fields = ("id", "created_at", "proverb")
+        read_only_fields = ("user",)
 
     def validate(self, data):
         # 로그인 한 유저 정보 가져오기

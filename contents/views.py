@@ -22,6 +22,8 @@ class ProverbScrapListCreateView(viewsets.ModelViewSet):
     serializer_class = ProverbScrapSerializer
     permission_classes = [IsAuthenticated]
 
+    http_method_names = ["get", "post", "delete"]
+
     # 관심 등록한 명언 출력
     def get_queryset(self):
         return (
