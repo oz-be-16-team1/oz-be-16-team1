@@ -1,8 +1,19 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 
 class Transaction(models.Model):
+    class TransactionType(models.TextChoices):
+        INCOME = "income", "수입"
+        SPENDING = "spending", "지출"
+        SAVING = "saving", "저축"
+
+    class CategoryType(models.TextChoices):
+        NECESSITY = "necessity", "필요"
+        CHOICE = "choice", "선택"
+        ETC = "etc", "기타"
+
     # 관계 설정 / 어떤 아이의 내역인가?
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="transactions"
@@ -15,13 +26,18 @@ class Transaction(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name="transactions",
+        blank=True,
     )
 
     # 금액 및 기본 정보
     amount = models.DecimalField(max_digits=12, decimal_places=0)
     store_name = models.CharField(max_length=255)
-    category = models.CharField(max_length=100)
-
+    # 수입 지출 저축 카테고리
+    category = models.CharField(max_length=10, choices=TransactionType.choices)
+    # 필요인지, 선택인지, 기타 정보
+    category_middle = models.CharField(max_length=20, choices=CategoryType.choices)
+    # 기타일때 들어갈 내용
+    etc = models.CharField(max_length=100, null=True)
     # 교육, 아이의 주체적 참여를 위한 필드
     is_confirmed = models.BooleanField(
         default=False
@@ -31,12 +47,14 @@ class Transaction(models.Model):
     )
     memo = models.TextField(null=True, blank=True)  # 셀프 피드백 기록
 
-    # ai_feedback = models.TextField(null=True, blank=True)
+    ai_feedback = models.TextField(null=True, blank=True)
 
     # 고정 지출 여부
     is_fixed_expense = models.BooleanField(default=False)  # 고정비 여부
     # 메타 정보 (발생 일자)
     created_at = models.DateTimeField(auto_now_add=True)
+    # 실제 일자 (기본값 지금)
+    real_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
         ordering = ["-created_at"]  # 최신순 정렬
