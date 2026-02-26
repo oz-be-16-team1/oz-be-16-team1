@@ -34,4 +34,4 @@ class ProverbScrapListCreateView(viewsets.ModelViewSet):
 
     # 명언 관심 등록 추가
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user, pk=self.kwargs.get("proverb_id"))
+        serializer.save(user=self.request.user)

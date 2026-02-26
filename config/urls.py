@@ -17,9 +17,15 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/users/", include("users.urls")),  # users 앱
-    # http://localhost:8000/ 접속 시 로그인 페이지로 이동
+    # API
+    path("api/users/", include("users.urls")),
+    path("api/assets/", include("assets.urls")),
+    path("api/missions/", include("missions.urls")),
+    path("api/finance/", include("finance.urls")),
+    path("api/contents/", include("contents.urls")),
+    # Web
     path("", RedirectView.as_view(pattern_name="users:login")),
+    # Docs
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),

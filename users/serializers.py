@@ -16,9 +16,13 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, data):
         role = data.get("role", None)
         parent = data.get("parent", None)
+        email = data.get("email")
 
         if role is None:
             raise serializers.ValidationError({"role": "role은 필수입니다."})
+
+        if not email:
+            raise serializers.ValidationError({"email": "email은 필수입니다."})
 
             # 역할이 부모인 유저 (role: parent) 는 자신의 부모를 가질 수 없도록 제한
         # 최적의 방법은 아닌것 같지만
