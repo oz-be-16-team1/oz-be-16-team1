@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "rest_framework",  # DRF
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -126,4 +127,12 @@ LOGGING = {
         "handlers": ["console"],
         "level": "INFO",
     },
+}
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    },
+    "USE_SESSION_AUTH": False,
+    "JSON_EDITOR": True,
 }
