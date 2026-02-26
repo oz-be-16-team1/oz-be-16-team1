@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data_v2:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: /scripts/run.sh
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+      - DJANGO_SETTINGS_MODULE=config.settings.prod     # 배포용 설정
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+volumes:
+  postgres_data_v2:
