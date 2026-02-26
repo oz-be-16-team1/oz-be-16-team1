@@ -23,15 +23,19 @@ class TransactionTest(APITestCase):
     def setUp(self):
         # user1 부모 유저 생성
         self.user1 = User.objects.create_user(
-            username="test1", email="", password="test1"
+            username="test1",
+            email="test1@naver.com",
+            password="test1",
+            is_email_verified=True,
         )
         # user1의 자식 user2 유저 생성
         self.user2 = User.objects.create_user(
             username="test2",
-            email="",
+            email="test2@naver.com",
             password="test2",
             role="CHILD",
             parent=self.user1,
+            is_email_verified=True,
         )
         # user1의 asset1 생성
         self.asset1 = Asset.objects.create(
@@ -115,7 +119,10 @@ class TransactionTest(APITestCase):
     # 비정상 상세 조회 테스트
     def test_failed_view(self):
         self.user3 = User.objects.create_user(
-            username="test3", email="", password="test3"
+            username="test3",
+            email="test3@naver.com",
+            password="test3",
+            is_email_verified=True,
         )
         self.client.force_login(self.user3)
         url = reverse("finance:transaction-detail", kwargs={"pk": self.transaction.id})
@@ -171,15 +178,19 @@ class FixedExpenseTest(APITestCase):
     def setUp(self):
         # user1 부모 유저 생성
         self.user1 = User.objects.create_user(
-            username="test1", email="", password="test1"
+            username="test1",
+            email="test1@naver.com",
+            password="test1",
+            is_email_verified=True,
         )
         # user1의 자식 user2 유저 생성
         self.user2 = User.objects.create_user(
             username="test2",
-            email="",
+            email="tes2@naver.com",
             password="test2",
             role="CHILD",
             parent=self.user1,
+            is_email_verified=True,
         )
 
         # 정기 결제 등록
