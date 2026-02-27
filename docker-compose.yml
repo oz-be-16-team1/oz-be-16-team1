@@ -20,8 +20,8 @@ services:
     command: /scripts/run.sh
     env_file:
       - .env
-    ports:
-      - "8000:8000"
+#    ports:
+#      - "8000:8000"
     environment:
       - PYTHONIOENCODING=utf-8
       - LANG=C.UTF-8
@@ -31,6 +31,18 @@ services:
       - db
     volumes:
       - .:/app
+      - static_volume:/app/staticfiles  # 정적 파일 공유용 볼륨
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/app/staticfiles  # web 컨테이너가 모은 파일을 같이 봄
+    depends_on:
+      - web
 
 volumes:
   postgres_data_v2:
+  static_volume:  # 파일 공유를 위한 볼륨 정의
