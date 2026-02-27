@@ -1,4 +1,4 @@
-INSERT INTO "MoneyProverb" (content, author, category) VALUES
+INSERT INTO contents_moneyproverb (content, author, category) VALUES
 ('작은 지출을 조심하라. 작은 구멍이 큰 배를 가라앉힌다.', '벤저민 프랭클린', '저축'),
 ('저축은 소득이 아니라 습관이다.', '워런 버핏', '저축'),
 ('버는 것보다 덜 쓰는 것이 부의 시작이다.', '조지 S. 클래슨', '저축'),
