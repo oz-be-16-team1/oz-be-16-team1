@@ -58,7 +58,7 @@ class ProverbScrapTest(APITestCase):
         self.client.force_authenticate(user=self.user2)
         url1 = reverse("contents:proverb_scrap-list")
 
-        data = {"user": self.user2.id, "proverb": self.proverb1.id}
+        data = {"user": self.user2.id, "proverb_id": self.money1.id}
         response = self.client.post(url1, data)
         # 다른 유저의 동일 명언 스크랩은 허용됨
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -76,10 +76,18 @@ class ProverbScrapTest(APITestCase):
         self.client.force_authenticate(user=self.user1)
         url1 = reverse("contents:proverb_scrap-list")
 
-        data = {"user": self.user1.id, "proverb": self.proverb1.id}
+        data = {"user": self.user1.id, "proverb_id": self.money1.id}
         response = self.client.post(url1, data)
         # 중복 관심 등록으로 인해 400 에러
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_failed_create_not_found(self):
+        self.client.force_authenticate(user=self.user2)
+        url1 = reverse("contents:proverb_scrap-list")
+
+        data = {"proverb_id": 999999}
+        response = self.client.post(url1, data)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     # 비정상 삭제 테스트
     def test_failed_delete(self):

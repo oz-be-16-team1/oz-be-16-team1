@@ -4,6 +4,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
+from unittest.mock import patch
 
 User = get_user_model()
 
@@ -112,3 +113,20 @@ class LoginLogoutTestCase(APITestCase):
         response = self.client.post(self.logout_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class RegisterTestCase(APITestCase):
+    def test_register_mail_fail_rolls_back_user(self):
+        url = reverse("users:api_register")
+        data = {
+            "username": "newuser",
+            "email": "newuser@example.com",
+            "password": "password123",
+            "role": "PARENT",
+        }
+
+        with patch("users.views.send_mail", side_effect=Exception("mail fail")):
+            response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.assertFalse(User.objects.filter(username="newuser").exists())

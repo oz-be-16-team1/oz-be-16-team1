@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Asset
 from .serializers import AssetSerializer, AssetUpdateSerializer
+from missions.models import MissionGoal
 
 
 class AssetListCreateView(APIView):
@@ -70,6 +71,17 @@ class AssetDetailView(APIView):
         if not asset:
             return Response(
                 {"detail": "자산을 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND
+            )
+        if (
+            asset.is_saving_account
+            and MissionGoal.objects.filter(
+                child=request.user,
+                status=MissionGoal.Status.IN_PROGRESS,
+            ).exists()
+        ):
+            return Response(
+                {"detail": "진행 중인 미션이 있어 저축계좌를 삭제할 수 없습니다."},
+                status=status.HTTP_400_BAD_REQUEST,
             )
         # 실제로 DB에서 지우는 게 아니라
         # is_active를 False로 바꾸는 Soft Delete
