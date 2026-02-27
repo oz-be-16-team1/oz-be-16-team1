@@ -6,7 +6,8 @@ DEBUG = False
 # BASE_DIR은 base.py에 정의되어 있지만, 린터 에러 방지를 위해
 env = environ.Env()
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["mydomain.com"])  # noqa: F405
+# ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["mydomain.com"])  # noqa: F405
+ALLOWED_HOSTS = ["15.165.253.147", "localhost", "127.0.0.1"]
 
 # 배포용 DB (PostgreSQL)
 DATABASES = {
@@ -26,12 +27,16 @@ SECURE_PROXY_SSL_HEADER = (
     "https",
 )  # Load Balancer 사용 시 필수
 CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+
+# 보안 설정 (HTTPS/인증서 전까지는 False 유지)
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+# # 4. HSTS 설정 (인증서 전까지는 주석 처리 추천)
+# SECURE_HSTS_SECONDS = 0
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+# SECURE_HSTS_PRELOAD = False
 
 # 로깅은 에러 중심으로
 LOGGING = {

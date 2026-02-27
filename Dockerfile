@@ -24,6 +24,7 @@ COPY pyproject.toml uv.lock /app/
 #RUN uv pip install --system --no-cache -r pyproject.toml
 #RUN uv sync --frozen --no-cache --no-install-project
 RUN uv pip install --system --no-cache .
+RUN uv pip install --system --no-cache gunicorn     # 추가
 
 # 6. 프로젝트 전체 파일 복사 (단, .dockerignore 설정 권장)
 COPY . /app/
