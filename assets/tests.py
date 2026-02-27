@@ -1,9 +1,11 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from rest_framework.test import APIClient
 from rest_framework import status
 from .models import Asset
 from .security import is_encrypted
+from missions.models import MissionGoal
 
 User = get_user_model()
 
@@ -192,6 +194,26 @@ class AssetAPITest(TestCase):
         )
         response = self.client.delete(f"/api/assets/{other_asset.id}/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_진행중_미션이_있으면_저축계좌_삭제_실패(self):
+        saving_asset = Asset.objects.create(
+            user=self.user,
+            asset_type="bank",
+            name="저축 통장",
+            balance=15000,
+            is_saving_account=True,
+        )
+        MissionGoal.objects.create(
+            child=self.user,
+            title="닌텐도 사기",
+            target_price=50000,
+            deadline=timezone.localdate() + timezone.timedelta(days=7),
+        )
+
+        response = self.client.delete(f"/api/assets/{saving_asset.id}/")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        saving_asset.refresh_from_db()
+        self.assertTrue(saving_asset.is_active)
 
     def test_user가_없어도_str_호출_가능(self):
         self.asset.user = None

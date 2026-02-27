@@ -41,8 +41,9 @@ class RegisterView(generics.CreateAPIView):
             )
         except Exception:
             # 이메일 발송 실패 시 처리 (로그 기록 등)
+            user.delete()
             return Response(
-                {"message": "유저는 생성되었으나 인증 메일 발송에 실패했습니다."},
+                {"message": "인증 메일 발송에 실패하여 회원가입이 롤백되었습니다."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
         return Response(
